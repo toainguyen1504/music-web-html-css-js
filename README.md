@@ -102,3 +102,156 @@ Trong đó `song` là bài hát đã lấy từ API. Lệnh `play()` nên chạy
 4. Khi nhấn chọn một bài hát, website sẽ phát bài hát đó.
 
 **Lưu ý:** Các em cần có Internet để gọi API. Nếu API không trả dữ liệu, hãy mở F12 → Network để kiểm tra. Một số API có thể giới hạn lượt gọi hoặc yêu cầu API Key; không đưa khóa bí mật vào JavaScript phía trình duyệt.
+
+## 6. Hướng dẫn làm chức năng phát nhạc
+
+**Mục tiêu:** Khi người dùng nhấn vào một bài hát, website sẽ phát bài hát đó. Người dùng có thể tạm dừng, tiếp tục và chuyển bài.
+
+### Bước 1: Tạo giao diện phát nhạc (HTML)
+
+```html
+<h2>Danh sách bài hát</h2>
+
+<div id="songList"></div>
+
+<h3 id="songName">Chưa chọn bài hát</h3>
+
+<audio id="player" controls></audio>
+```
+
+Giải thích:
+- `songList`: Nơi hiển thị danh sách bài hát.
+- `songName`: Hiển thị tên bài đang phát.
+- `audio`: Trình phát nhạc có sẵn của HTML, hỗ trợ phát, tạm dừng, tua và chỉnh âm lượng.
+
+### Bước 2: Gọi API lấy danh sách bài hát (JavaScript)
+
+```javascript
+let songs = [];
+let currentIndex = 0;
+
+const player = document.getElementById("player");
+
+async function loadSongs() {
+  const url =
+    "https://api.audius.co/v1/tracks/trending?limit=10";
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Không lấy được danh sách nhạc");
+  }
+
+  const result = await response.json();
+
+  songs = result.data;
+
+  const list = document.getElementById("songList");
+
+  songs.forEach((song, index) => {
+    const button = document.createElement("button");
+
+    button.textContent = song.title;
+
+    button.onclick = () => playSong(index);
+
+    list.appendChild(button);
+  });
+}
+
+loadSongs().catch(console.error);
+```
+
+**Giải thích:**
+- `fetch()`: Gọi API lấy danh sách nhạc.
+- `songs`: Mảng lưu các bài hát lấy được.
+- `forEach()`: Duyệt từng bài hát để tạo nút.
+- `onclick`: Khi người dùng nhấn nút, gọi hàm `playSong()`.
+
+### Bước 3: Lập trình phát nhạc
+
+```javascript
+function playSong(index) {
+  currentIndex = index;
+
+  const song = songs[index];
+
+  const url =
+    `https://api.audius.co/v1/tracks/${song.id}/stream`;
+
+  player.src = url;
+
+  document.getElementById("songName").textContent =
+    song.title;
+
+  player.play().catch(console.error);
+}
+```
+
+**Giải thích:**
+- `songs[index]`: Lấy bài hát mà người dùng chọn.
+- `song.id`: Lấy ID của bài hát.
+- `player.src`: Gán đường dẫn nhạc từ Audius API.
+- `player.play()`: Bắt đầu phát nhạc.
+
+### Bước 4: Thêm nút chuyển bài
+
+HTML:
+
+```html
+<button onclick="prevSong()">Bài trước</button>
+<button onclick="nextSong()">Bài tiếp</button>
+```
+
+JavaScript:
+
+```javascript
+function nextSong() {
+  if (songs.length === 0) return;
+
+  currentIndex = (currentIndex + 1) % songs.length;
+
+  playSong(currentIndex);
+}
+
+function prevSong() {
+  if (songs.length === 0) return;
+
+  currentIndex =
+    (currentIndex - 1 + songs.length) % songs.length;
+
+  playSong(currentIndex);
+}
+```
+
+**Giải thích:**
+- `nextSong()`: Chuyển sang bài hát tiếp theo.
+- `prevSong()`: Quay lại bài hát trước.
+- `currentIndex`: Lưu vị trí bài hát đang phát.
+- Toán tử `%`: Giúp quay lại bài đầu tiên khi đã đến bài cuối.
+
+### Bước 5: Tự động chuyển bài khi nhạc kết thúc
+
+```javascript
+player.addEventListener("ended", function() {
+  nextSong();
+});
+```
+
+Khi một bài hát kết thúc, JavaScript tự gọi `nextSong()` để phát bài tiếp theo.
+
+### Bước 6: Chạy thử website
+
+1. Mở `index.html` bằng Live Server.
+2. Kiểm tra danh sách bài hát đã xuất hiện.
+3. Nhấn vào một bài để phát nhạc.
+4. Thử tạm dừng, tiếp tục và chuyển bài.
+5. Nếu không phát được, mở F12 → Console hoặc Network để kiểm tra lỗi.
+
+**Lưu ý:** Các đoạn HTML và JavaScript trên cần đặt chung trong một trang hoặc liên kết đúng file JS bằng `defer`. JavaScript ở bước 2–5 có thể đặt liên tiếp trong `app.js`. Một số bài hát có thể không hỗ trợ stream hoặc API có thể yêu cầu quyền truy cập.
+
+### Kết quả cần đạt
+
+Học sinh hiểu được quy trình:
+
+**Gọi API → Lấy danh sách bài hát → Chọn bài hát → Lấy ID → Tạo URL stream → Phát nhạc bằng HTML Audio.**
