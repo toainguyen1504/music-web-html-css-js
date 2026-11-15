@@ -1,0 +1,52 @@
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#f4f5fb;background:#101424;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse 80% 40% at 70% -10%,#272445 0%,transparent 70%),#101424}
+button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #ac8bff;outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.app-shell{max-width:1220px;margin:0 auto;padding:0 36px 150px}
+.topbar{display:flex;justify-content:space-between;align-items:center;height:89px;gap:14px;border-bottom:1px solid #ffffff11}
+.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:900;letter-spacing:.8px}
+.brand-icon{display:grid;place-items:center;background:linear-gradient(140deg,#ad77ff,#ea76c9);width:37px;height:37px;border-radius:12px;font-size:25px}
+.brand-dot{color:#c38bff}.top-label{color:#a9abc3;font-size:13px}.top-link{font-size:13px;color:#cbb0ff}
+.hero{position:relative;display:flex;min-height:348px;align-items:center;justify-content:space-between;overflow:hidden;border-bottom:1px solid #ffffff12}
+.hero-content{position:relative;z-index:1;width:min(590px,70%);padding:43px 0 38px}
+.eyebrow{display:flex;align-items:center;gap:8px;color:#c2a2ff;font-size:11px;letter-spacing:2.3px;font-weight:800}
+.live-dot{width:7px;height:7px;background:#a38cff;border-radius:50%;box-shadow:0 0 16px #a38cff}
+h1{margin:17px 0 14px;font-size:clamp(39px,5vw,65px);line-height:1.04;letter-spacing:-2px}h1 em{font-style:normal;color:#b28aff}
+.hero p{font-size:14px;max-width:475px;color:#aeb1c8;line-height:1.8;margin:0 0 24px}
+.search-form{display:flex;align-items:center;gap:12px;max-width:530px;background:#22263a;border:1px solid #383a55;border-radius:14px;padding:6px 7px 6px 17px}
+.search-form>span{font-size:25px;color:#aeb1c8}.search-form input{background:transparent;border:0;outline:none;color:white;flex:1;min-width:0;font-size:14px}
+.search-form input::placeholder{color:#9398b3}.search-form button{background:#aa83ef;color:#151025;border:0;font-weight:800;padding:11px 19px;border-radius:10px;white-space:nowrap}
+.search-form button:hover{background:#c09cff}
+.hero-art{position:absolute;right:70px;top:43px;width:270px;height:270px;display:grid;place-items:center}
+.art-ring{position:absolute;border:1px solid #a686ff30;border-radius:50%}.ring-one{width:310px;height:310px}.ring-two{width:370px;height:370px}
+.vinyl{width:238px;height:238px;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#272638 0 3px,#131627 4px 7px);border:10px solid #27263c;box-shadow:0 24px 60px #0008,0 0 0 12px #a18aff0b;display:grid;place-items:center;transform:rotate(-12deg)}
+.vinyl-label{display:grid;place-items:center;background:linear-gradient(135deg,#ac81f8,#e783c3);color:#1b1731;width:95px;height:95px;border-radius:50%;font-weight:900;font-size:23px;letter-spacing:-1px}.vinyl-label span{font-size:9px}
+.music-section{padding-top:34px}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:20px}.section-kicker{font-size:11px;font-weight:800;letter-spacing:1.9px;color:#a688e7;margin:0 0 8px}
+h2{font-size:27px;letter-spacing:-.6px;margin:0}.count{color:#9093ad;font-size:13px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 23px}.filter{border:1px solid #383c55;background:#1b2033;color:#b9bad0;border-radius:999px;padding:9px 18px;font-size:13px}
+.filter:hover{border-color:#9365e4}.filter.active{background:#a37aec;color:#140e24;border-color:transparent;font-weight:800}
+.status{color:#aeb1c8;min-height:22px;margin:0 0 12px;font-size:14px}.status:empty{display:none}
+.song-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:17px}
+.song-card{min-width:0;display:block;text-align:left;background:#1b2032;padding:12px;border:1px solid #292e47;border-radius:16px;color:#fff;transition:transform .18s,border-color .18s,background .18s}
+.song-card:hover{transform:translateY(-3px);border-color:#775aaa;background:#25283e}.song-card.active{border-color:#b48aff;background:#2a2743}
+.song-cover{position:relative;display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:11px;background:linear-gradient(135deg,#594781,#332d53)}
+.song-cover-fallback{display:grid;place-items:center;font-size:46px;color:#ddbbff}
+.song-details{padding:12px 4px 4px}.song-title{display:block;font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.song-artist{display:block;font-size:12px;color:#a7a9c1;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.attribution{color:#9296ab;font-size:12px;margin-top:38px}.attribution a{color:#bba0f5}
+.player-bar{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#191d2df5;backdrop-filter:blur(16px);border-top:1px solid #41425d;box-shadow:0 -12px 40px #080a1766}
+.player-inner{max-width:1280px;margin:0 auto;min-height:107px;padding:15px 36px;display:grid;align-items:center;grid-template-columns:minmax(185px,1fr) minmax(300px,1.45fr) minmax(135px,1fr);gap:25px}
+.playing-meta{display:flex;gap:12px;min-width:0;align-items:center}.now-cover,.cover-placeholder{width:59px;height:59px;flex:0 0 59px;object-fit:cover;border-radius:9px;background:linear-gradient(140deg,#9a71f3,#b75cb9)}
+.cover-placeholder{display:grid;place-items:center;font-size:30px}.now-cover[hidden]{display:none}.playing-text{min-width:0}.playing-text strong,.playing-text span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.playing-text strong{font-size:13px}.playing-text span{font-size:12px;margin-top:5px;color:#a5a6bf}
+.player-center{display:grid;gap:12px}.transport{display:flex;align-items:center;justify-content:center;gap:26px}.transport button{border:0;color:#f5f0ff}.icon-btn{background:transparent;font-size:17px}.icon-btn:hover{color:#c49afa}
+.play-btn{width:37px;height:37px;border-radius:50%;font-size:16px;background:#c19bff;color:#171126!important;display:grid;place-items:center;padding:0}.play-btn:hover{background:#d6b8ff}
+.seek-wrap{display:flex;align-items:center;gap:11px;color:#a2a5bd;font-size:11px}.seek-wrap input{flex:1;min-width:0}
+input[type=range]{appearance:none;-webkit-appearance:none;height:5px;border-radius:20px;background:#51556e;accent-color:#bb92ff;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:#c7a7ff}
+input[type=range]::-moz-range-thumb{border:0;width:12px;height:12px;border-radius:50%;background:#c7a7ff}
+.volume-wrap{display:flex;align-items:center;gap:12px;justify-content:flex-end;color:#aeb1c8;font-size:17px}.volume-wrap input{max-width:112px;width:100%}
+@media(max-width:900px){.song-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-art{right:-40px;opacity:.53}.player-inner{grid-template-columns:minmax(145px,1fr) minmax(210px,1.2fr) 100px;padding-inline:22px;gap:15px}.app-shell{padding-inline:23px}}
+@media(max-width:620px){.app-shell{padding:0 16px 190px}.topbar{height:72px}.top-label{display:none}.hero{min-height:325px}.hero-content{width:100%;padding:35px 0}.hero-art{right:-130px;opacity:.21}.hero h1{font-size:43px}.hero p{font-size:13px}.search-form button{padding:10px 13px}.section-heading h2{font-size:22px}.song-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.song-card{padding:8px;border-radius:12px}.song-title{font-size:13px}.song-artist{font-size:11px}.filters{gap:7px}.filter{padding:8px 13px}.player-inner{grid-template-columns:1fr;gap:10px;padding:11px 16px 14px}.playing-meta{grid-row:1}.now-cover,.cover-placeholder{width:41px;height:41px;flex-basis:41px}.player-center{grid-row:2;gap:8px}.volume-wrap{display:none}.transport{gap:35px}.player-bar{border-radius:14px 14px 0 0}}
+.cover-placeholder[hidden]{display:none}
