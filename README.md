@@ -1,52 +1,104 @@
-# WAVE — Audius Music API Demo (bản sửa lỗi Jamendo)
+# HƯỚNG DẪN SỬ DỤNG AUDIUS API
 
-Demo web nghe nhạc bằng HTML/CSS/JavaScript thuần. Đã thay Jamendo sang **Audius API** để không còn dùng client_id thử nghiệm Jamendo 709fa152 bị đình chỉ.
+## 1. Audius API là gì?
 
-## Cách chạy
+**Audius** là nền tảng nghe nhạc trực tuyến, cung cấp API để lập trình viên lấy dữ liệu bài hát về website của mình.
 
-1. Giải nén ZIP, mở thư mục `wave-audius-demo` bằng VS Code.
-2. Chuột phải vào `index.html` > **Open with Live Server**.
-3. Mở URL như `http://127.0.0.1:5500`.
-4. Khi danh sách xuất hiện, nhấp ảnh/tên một bài để phát. Nếu API bị hạn chế theo vùng hoặc có lỗi, đọc Console (F12).
+Website có thể sử dụng Audius API để:
+- Lấy danh sách bài hát.
+- Tìm kiếm bài hát.
+- Lấy tên bài hát, ca sĩ và ảnh bìa.
+- Phát nhạc trực tiếp.
 
-Hoặc chạy: `python -m http.server 5500` rồi mở `http://localhost:5500`.
+**Tài liệu API:** https://docs.audius.co/api/
 
-## Cấu trúc
+## 2. Các API thường sử dụng
 
-- `index.html`: cấu trúc UI, favicon, liên kết tài liệu.
-- `style.css`: style và responsive giữ nguyên từ giao diện WAVE cũ.
-- `app.js`: Audius REST API, load/search/genre, stream, play/pause/prev/next/progress/volume, retry máy chủ dự phòng.
-- `favicon.svg`: icon tab để không bị lỗi favicon.ico 404.
+**API 1 — Lấy danh sách 10 bài hát nổi bật**
 
-## API sử dụng
+https://api.audius.co/v1/tracks/trending?limit=10
 
-1. Danh sách nổi bật:
-   `GET https://api.audius.co/v1/tracks/trending?app_name=WaveMusicDemo&limit=24`
-2. Tìm kiếm:
-   `GET https://api.audius.co/v1/tracks/search?app_name=WaveMusicDemo&query=love&limit=24`
-3. Phát nhạc:
-   `GET https://api.audius.co/v1/tracks/{track_id}/stream?app_name=WaveMusicDemo`
-4. Danh sách theo thể loại: thêm `&genre=Pop`, `Rock`, `Electronic`, hoặc `Jazz`.
+**API 2 — Tìm kiếm bài hát**
 
-`app.js` dự phòng chuyển sang `https://discoveryprovider.audius.co/v1` nếu host đầu không đáp ứng. URL stream dùng trực tiếp trong HTML5 `<audio>`.
+https://api.audius.co/v1/tracks/search?query=love&limit=10
 
-### Nếu API Audius yêu cầu key hoặc bị rate limit
+**API 3 — Lấy danh sách bài hát theo thể loại**
 
-- Tạo API key tại https://api.audius.co/plans hoặc https://audius.co/settings.
-- Điền **API Key dành cho frontend** (không phải Bearer Token hay secret) vào `PUBLIC_API_KEY` ở đầu `app.js`.
-- Giữ mọi token bí mật ngoài frontend. Có thể cần backend proxy trong bản production nếu muốn kiểm soát giới hạn/độ ổn định.
+https://api.audius.co/v1/tracks/trending?genre=Pop&limit=10
 
-## Kiểm tra nhanh (F12 > Network)
+**API 4 — Phát nhạc**
 
-- Tìm request `tracks/trending`: kỳ vọng HTTP 200, JSON có `data: []`.
-- Nhấp bài hát: tìm request `tracks/{id}/stream`; trình duyệt có thể theo redirect.
-- Nếu response bị 401/403/429: xem yêu cầu khóa/rate limit ở Audius.
-- Nếu danh sách hiển thị nhưng audio lỗi: thử bài khác; một số bài bị giới hạn stream.
+```text
+https://api.audius.co/v1/tracks/{id}/stream
+```
 
-## Giới hạn
+Thay `{id}` bằng ID của bài hát lấy được từ API.
 
-- Thư viện Audius không tương đương Spotify/Zing, không đảm bảo mọi bài có thể stream.
-- Không tải nhạc; tuân thủ điều khoản và quyền nội dung của Audius và nghệ sĩ.
-- **Đã kiểm tra cú pháp JavaScript, cấu trúc file và các thao tác danh sách, tìm kiếm, chọn bài, chuyển bài, lọc thể loại trên Chromium với dữ liệu API mô phỏng. Chưa kiểm thử API/stream Audius thật qua Internet trong môi trường tạo ZIP.**
+**Giải thích tham số:**
+- `limit=10`: Lấy tối đa 10 bài hát.
+- `query=love`: Tìm kiếm nhạc có từ khóa "love".
+- `genre=Pop`: Lọc nhạc thuộc thể loại Pop.
+- `id`: Mã định danh của một bài hát.
 
-Tài liệu chính thức: https://docs.audius.co/api/ và https://docs.audius.co/sdk/tracks/
+## 3. Cách lấy dữ liệu bằng JavaScript
+
+**Bước 1:** Sử dụng `fetch()` để gọi API.
+
+```javascript
+async function layDanhSachNhac() {
+  const url = "https://api.audius.co/v1/tracks/trending?limit=10";
+
+  const response = await fetch(url);
+  const result = await response.json();
+
+  console.log(result.data);
+}
+
+layDanhSachNhac();
+```
+
+**Bước 2:** Nhấn `F12` → `Console` để xem danh sách bài hát.
+
+**Bước 3:** Lấy thông tin từng bài hát.
+
+```javascript
+const songs = result.data;
+
+songs.forEach(song => {
+  console.log(song.title);     // Tên bài hát
+  console.log(song.user.name); // Tên ca sĩ
+  console.log(song.id);        // ID bài hát
+});
+```
+
+*Đặt đoạn code ở bước 3 bên trong hàm `layDanhSachNhac()`, sau khi nhận được `result`.*
+
+## 4. Cách phát nhạc
+
+Sau khi có ID bài hát, sử dụng thẻ HTML:
+
+```html
+<audio id="player" controls></audio>
+```
+
+JavaScript:
+
+```javascript
+const player = document.getElementById("player");
+
+player.src =
+  `https://api.audius.co/v1/tracks/${song.id}/stream`;
+
+player.play();
+```
+
+Trong đó `song` là bài hát đã lấy từ API. Lệnh `play()` nên chạy khi người dùng nhấn nút phát nhạc.
+
+## 5. Bài tập thực hành
+
+1. Lấy danh sách 20 bài hát từ Audius.
+2. Hiển thị tên bài hát và tên ca sĩ lên website.
+3. Thêm chức năng tìm kiếm bài hát.
+4. Khi nhấn chọn một bài hát, website sẽ phát bài hát đó.
+
+**Lưu ý:** Các em cần có Internet để gọi API. Nếu API không trả dữ liệu, hãy mở F12 → Network để kiểm tra. Một số API có thể giới hạn lượt gọi hoặc yêu cầu API Key; không đưa khóa bí mật vào JavaScript phía trình duyệt.
